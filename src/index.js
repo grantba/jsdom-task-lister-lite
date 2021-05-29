@@ -2,15 +2,29 @@ window.addEventListener('DOMContentLoaded', (event) => {
   console.log('DOM fully loaded and parsed');
 });
 
-document.addEventListener("submit", (event) => {
+const form = document.getElementById("create-task-form");
+const todoList = document.getElementById("tasks");
+
+document.addEventListener("submit", function(event) {
   event.preventDefault();
   let listItem = document.getElementById("new-task-description").value;
-  const todoList = document.getElementById("tasks");
   const lineItem = document.createElement("li");
-  let newLi = todoList.appendChild(lineItem);
+  const newLi = todoList.appendChild(lineItem);
   newLi.innerText = listItem;
-  listItem.reset;
+  // another way to accomplish this is:
+  // todoList.innerHTML += `<li> ${listItem} </li>`
+  // on one line
+  newLi.innerHTML += ' <button data-action="delete-task"> x </button>';
+  // but this isn't best practice b/c of security issues
+  form.reset();
 });
+
+todoList.addEventListener("click", function(event) {
+  if (event.target.dataset.action === "delete-task") {
+    event.target.parentNode.remove();
+  }
+});
+
 
 // document.addEventListener("DOMContentLoaded", () => {
 //   //grab all the necessary DOM elements
